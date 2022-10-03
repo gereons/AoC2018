@@ -7,16 +7,56 @@
 import AoCTools
 
 final class Day02: AOCDay {
-    let input: String
+    let input: [String]
     init(rawInput: String? = nil) {
-        self.input = rawInput ?? Self.rawInput
+        self.input = (rawInput ?? Self.rawInput).lines
     }
 
     func part1() -> Int {
-        return 0
+        var totalDoubles = 0
+        var totalTriples = 0
+        for line in input {
+            let (doubles, triples) = check(line)
+            if doubles > 0 {
+                totalDoubles += 1
+            }
+            if triples > 0 {
+                totalTriples += 1
+            }
+        }
+        return totalDoubles * totalTriples
     }
 
-    func part2() -> Int {
-        return 0
+    private func check(_ line: String) -> (Int, Int) {
+        var freq = [Character: Int]()
+        for ch in line {
+            freq[ch, default: 0] += 1
+        }
+        let doubles = freq.filter { $0.value == 2 }.count
+        let triples = freq.filter { $0.value == 3 }.count
+        return (doubles, triples)
+    }
+
+    func part2() -> String {
+        for line in input {
+            for compare in input {
+                assert(line.count == compare.count)
+                var diffs = 0
+                var diffIdx = line.startIndex
+                for idx in line.indices {
+                    if line[idx] != compare[idx] {
+                        diffs += 1
+                        diffIdx = idx
+                    }
+                }
+                if diffs == 1 {
+                    let start = line[line.startIndex..<diffIdx]
+                    let end = line[line.index(after: diffIdx)...]
+                    return String(start + end)
+                }
+            }
+        }
+
+        fatalError()
     }
 }
