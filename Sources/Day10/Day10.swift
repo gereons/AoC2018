@@ -6,14 +6,51 @@
 
 import AoCTools
 
+private class Light {
+    private(set) var current: Point
+    let start: Point
+    let velocity: Point
+
+    static let regex = Regex(pattern: #"position=< *(-?\d*), *(-?\d*)> velocity=< *(-?\d*), *(-?\d*)>"#)
+
+    init(_ str: String) {
+        let matches = Self.regex.matches(in: str)
+        start = Point(Int(matches[0])!, Int(matches[1])!)
+        velocity = Point(Int(matches[2])!, Int(matches[3])!)
+        current = start
+    }
+
+    func move() {
+        current = Point(current.x + velocity.x, current.y + velocity.y)
+    }
+}
+
 final class Day10: AOCDay {
-    let input: String
+    private let lights: [Light]
+
     init(rawInput: String? = nil) {
-        self.input = rawInput ?? Self.rawInput
+        let input = rawInput ?? Self.rawInput
+        lights = input.lines.map { Light($0) }
     }
 
     func part1() -> Int {
-        return 0
+        var count = 0
+        while true {
+            let uniqueLights = Set(lights.map { $0.current })
+            let points = Dictionary(uniqueKeysWithValues: zip(uniqueLights, [Bool](repeating: true, count: uniqueLights.count)))
+            let grid = Grid(points: points)
+
+            let minY = points.keys.min { $0.y < $1.y }!.y
+            if grid.maxY - minY < 10 {
+                grid.draw()
+                break
+            }
+            lights.forEach { $0.move() }
+            count += 1
+        }
+
+        // solution: GJNKBZEE
+        return count
     }
 
     func part2() -> Int {
