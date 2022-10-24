@@ -3,12 +3,29 @@ import XCTest
 
 final class Day13Tests: XCTestCase {
     func testDay13_1() throws {
-        let day = Day13(rawInput: "foo")
-        XCTAssertEqual(day.part1(), 0)
+        let track = #"""
+            /->-\
+            |   |  /----\
+            | /-+--+-\  |
+            | | |  | v  |
+            \-+-/  \-+--/
+              \------/
+            """#
+        let day = Day13(rawInput: track)
+        XCTAssertEqual(day.part1(), "7,3")
     }
 
     func testDay13_2() throws {
-        let day = Day13(rawInput: "bar")
-        XCTAssertEqual(day.part2(), 0)
+        let track = #"""
+            />-<\
+            |   |
+            | /<+-\
+            | | | v
+            \>+</ |
+              |   ^
+              \<->/
+            """#
+        let day = Day13(rawInput: track)
+        XCTAssertEqual(day.part2(), "6,4")
     }
 }
