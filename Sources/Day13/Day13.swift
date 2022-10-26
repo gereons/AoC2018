@@ -5,6 +5,7 @@
 //
 
 import AoCTools
+import Foundation
 
 private enum Track {
     case straightVertical
@@ -37,31 +38,31 @@ extension Point.Direction {
 }
 
 private class Cart {
-    let initialDirection: Point.Direction
-
+    let id = UUID()
+    var position: Point
     var direction: Point.Direction
     var turnCount = 0
+    var crashed = false
 
-    init(direction: Point.Direction) {
-        self.initialDirection = direction
+    init(position: Point, direction: Point.Direction) {
+        self.position = position
         self.direction = direction
     }
 
-    func reset() {
-        self.direction = initialDirection
-        self.turnCount = 0
+    func copy() -> Cart {
+        Cart(position: self.position, direction: self.direction)
     }
 }
 
 final class Day13: AOCDay {
     private let track: [Point: Track]
-    private let carts: [Point: Cart]
+    private let carts: [Cart]
 
     init(rawInput: String? = nil) {
         let input = rawInput ?? Self.rawInput
 
         var track = [Point: Track]()
-        var carts = [Point: Cart]()
+        var carts = [Cart]()
 
         for (y, line) in input.lines.enumerated() {
             for (x, ch) in line.enumerated() {
@@ -72,10 +73,10 @@ final class Day13: AOCDay {
                 case "|": track[point] = .straightVertical
                 case "-": track[point] = .straightHorizontal
                 case "+": track[point] = .intersection
-                case "v": track[point] = .straightVertical; carts[point] = Cart(direction: .s)
-                case "^": track[point] = .straightVertical; carts[point] = Cart(direction: .n)
-                case "<": track[point] = .straightHorizontal; carts[point] = Cart(direction: .w)
-                case ">": track[point] = .straightHorizontal; carts[point] = Cart(direction: .e)
+                case "v": track[point] = .straightVertical; carts.append(Cart(position: point, direction: .s))
+                case "^": track[point] = .straightVertical; carts.append(Cart(position: point, direction: .n))
+                case "<": track[point] = .straightHorizontal; carts.append(Cart(position: point, direction: .w))
+                case ">": track[point] = .straightHorizontal; carts.append(Cart(position: point, direction: .e))
                 case " ": ()
                 default: fatalError()
                 }
@@ -87,77 +88,64 @@ final class Day13: AOCDay {
     }
 
     func part1() -> String {
-        var carts = self.carts
-        carts.values.forEach { $0.reset() }
-
-        // draw(track: self.track, carts: carts)
-        var crashedAt: Point?
-        while crashedAt == nil {
-            var moved = [Point: Cart]()
-            for entry in carts.sorted(by: { $0.key < $1.key }) {
-                let point = entry.key
-                let cart = entry.value
-
-                let newPoint = move(cart, from: point)
-
-                if moved[newPoint] != nil || carts[newPoint] != nil {
-                    // print("crash at \(newPoint)")
-                    crashedAt = newPoint
-                    break
-                } else {
-                    moved[newPoint] = cart
-                }
-            }
-            // draw(track: self.track, carts: moved)
-            carts = moved
-        }
-
-        return "\(crashedAt!.x),\(crashedAt!.y)"
-    }
-
-    func part2() -> String {
-        var carts = self.carts
-        carts.values.forEach { $0.reset() }
+        let carts = self.carts.map { $0.copy() }
 
         // draw(track: self.track, carts: carts)
         while true {
-            var moved = [Point: Cart]()
-            let points = carts.keys.sorted(by: <)
-            for point in points {
-                guard let cart = carts[point] else { continue }
+            for cart in carts.sorted(by: { $0.position < $1.position }) {
+                let point = cart.position
 
                 let newPoint = move(cart, from: point)
+                cart.position = newPoint
 
-                assert(moved[newPoint] == nil)
-                if carts[newPoint] != nil {
-                    print("crash at \(newPoint)")
-                    carts[newPoint] = nil
-                    moved[newPoint] = nil
-                } else {
-                    moved[newPoint] = cart
+                let crashed = carts.filter {
+                    $0.id != cart.id && $0.position == cart.position
+                }
+
+                if let crash = crashed.first {
+                    return crash.position.description
                 }
             }
-            print(moved.count)
             // draw(track: self.track, carts: moved)
-            carts = moved
-            if moved.count == 1 {
-                break
-            }
         }
+    }
 
-        assert(carts.count == 1)
-        let point = carts.keys.first!
-        return "\(point.x),\(point.y)"
+    func part2() -> String {
+        let carts = self.carts.map { $0.copy() }
+
+        // draw(track: self.track, carts: carts)
+        while true {
+            for cart in carts.sorted(by: { $0.position < $1.position }) {
+                if cart.crashed { continue }
+                let point = cart.position
+
+                let newPoint = move(cart, from: point)
+                cart.position = newPoint
+
+                let crashed = carts.filter {
+                    $0.id != cart.id && !$0.crashed && $0.position == cart.position
+                }
+
+                if let crash = crashed.first {
+                    crash.crashed = true
+                    cart.crashed = true
+                    continue
+                }
+            }
+            let remaining = carts.filter { !$0.crashed }
+            if remaining.count == 1 {
+                return remaining[0].position.description
+            }
+            // draw(track: self.track, carts: moved)
+        }
     }
 
     private func move(_ cart: Cart, from point: Point) -> Point {
         var newPoint: Point?
         switch track[point] {
         case .straightVertical:
-            assert(cart.direction == .n || cart.direction == .s)
             newPoint = point.moved(cart.direction)
         case .straightHorizontal:
-            assert(cart.direction == .w || cart.direction == .e)
             newPoint = point.moved(cart.direction)
         case .curve1: // a "/" curve
             let dir = cart.direction
