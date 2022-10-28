@@ -11,9 +11,4 @@ After:  [3, 2, 2, 1]
 """)
         XCTAssertEqual(day.part1(), 1)
     }
-
-    func testDay16_2() throws {
-        let day = Day16(rawInput: "bar")
-        XCTAssertEqual(day.part2(), 0)
-    }
 }

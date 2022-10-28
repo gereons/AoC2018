@@ -110,6 +110,7 @@ final class Day16: AOCDay {
                 if matches.count == 1 {
                     knownOpcodes.insert(matches.first!)
                     map[sample.instruction[0]] = matches.first!
+                    break
                 }
             }
         }
