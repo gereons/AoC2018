@@ -220,12 +220,3 @@ final class Day13: AOCDay {
         print("-----------------------------")
     }
 }
-
-extension Point: Comparable {
-    public static func < (lhs: Point, rhs: Point) -> Bool {
-        if lhs.y != rhs.y {
-            return lhs.y < rhs.y
-        }
-        return lhs.x < rhs.x
-    }
-}
