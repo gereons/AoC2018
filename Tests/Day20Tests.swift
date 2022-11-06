@@ -3,12 +3,10 @@ import XCTest
 
 final class Day20Tests: XCTestCase {
     func testDay20_1() throws {
-        let day = Day20(rawInput: "foo")
-        XCTAssertEqual(day.part1(), 0)
-    }
+        let d1 = Day20(rawInput: "^ESSWWN(E|NNENN(EESS(WNSE|)SSS|WWWSSSSE(SW|NNNE)))$")
+        XCTAssertEqual(d1.part1(), 23)
 
-    func testDay20_2() throws {
-        let day = Day20(rawInput: "bar")
-        XCTAssertEqual(day.part2(), 0)
+        let d2 = Day20(rawInput: "^WSSEESWWWNW(S|NENNEEEENN(ESSSSW(NWSW|SSEN)|WSWWN(E|WWS(E|SS))))$")
+        XCTAssertEqual(d2.part1(), 31)
     }
 }
