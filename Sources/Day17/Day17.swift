@@ -6,15 +6,18 @@
 
 import AoCTools
 
-private enum Ground {
-    case sand
-    case clay
-    case spring
-    case water
+private enum Ground: Character {
+    case sand = "."
+    case clay = "#"
+    case spring = "+"
+    case waterFlow = "|"
+    case waterRest = "~"
 }
 
 final class Day17: AOCDay {
     private let map: [Point: Ground]
+    private let maxY: Int
+    private let minY: Int
 
     init(rawInput: String? = nil) {
         let input = rawInput ?? Self.rawInput
@@ -44,126 +47,104 @@ final class Day17: AOCDay {
         }
 
         self.map = map
+        self.maxY = map.keys.map { $0.y }.max()!
+        self.minY = map.keys.map { $0.y }.min()!
     }
 
     func part1() -> Int {
-        var map = self.map
-        let spring = Point(500, 0)
-        map[spring] = .spring
-
-        draw(map: map)
-
-        while true {
-            let add = addWater(from: spring, map: map)
-            if add.isEmpty { break }
-            add.forEach { map[$0] = .water }
-            print("-----")
-            draw(map: map)
-        }
-
-        return 0
+        let map = fill(map)
+        return map
+            .filter { $0.key.y >= minY && $0.key.y <= maxY }
+            .values.count { $0 == .waterFlow || $0 == .waterRest }
     }
 
     func part2() -> Int {
-        return 0
+        let map = fill(map)
+        return map
+            .filter { $0.key.y >= minY && $0.key.y <= maxY }
+            .values.count { $0 == .waterRest }
     }
 
-    private func addWater(from spring: Point, map: [Point: Ground]) -> [Point] {
-        var start = spring
-        while true {
-            let down1 = start.moved(.s)
-            if map[down1, default: .sand] != .sand {
-                break
-            }
-            start = down1
+    private func fill(_ map: [Point: Ground]) -> [Point: Ground] {
+        var map = map
+        let spring = Point(500, 0)
+        var queue = [spring]
+
+        func groundAt(_ x: Int, _ y: Int) -> Ground {
+            map[Point(x, y), default: .sand]
         }
 
-        let diag1 = start.moved(.sw)
-        let diag2 = start.moved(.se)
-        switch (map[diag1, default: .sand], map[diag2, default: .sand]) {
-        case (.spring, _), (_, .spring): fatalError()
-        case (.sand, .sand): return [diag1, diag2]
-        case (.sand, _): return [diag1]
-        case (_, .sand): return [diag2]
-        default:
-            if map[start, default: .sand] == .sand {
-                return [start]
+    next:
+        while var point = queue.popLast(), [.sand, .spring].contains(map[point, default: .sand]) {
+            // draw(map: map, maxY: maxY)
+            while true {
+                if point.y == (maxY) {
+                    map[point] = .waterFlow
+                    continue next
+                } else {
+                    let y = point.y
+                    switch groundAt(point.x, y + 1) {
+                    case .spring:
+                        fatalError()
+                    case .waterFlow:
+                        map[point] = .waterFlow
+                        continue next
+                    case .sand:
+                        queue.append(point)
+                        point = Point(point.x, y + 1)
+                    case .clay, .waterRest:
+                        var xLeft = point.x - 1
+                        while groundAt(xLeft, y) != .clay, (groundAt(xLeft, y + 1) == .clay || groundAt(xLeft, y + 1) == .waterRest) {
+                            xLeft -= 1
+                        }
+                        var xRight = point.x + 1
+                        while groundAt(xRight, y) != .clay, (groundAt(xRight, y + 1) == .clay || groundAt(xRight, y + 1) == .waterRest) {
+                            xRight += 1
+                        }
+                        if groundAt(xLeft, y) == .clay, groundAt(xRight, y) == .clay {
+                            for x in (xLeft + 1)...(xRight - 1) {
+                                map[Point(x, y)] = .waterRest
+                            }
+                            continue next
+                        } else {
+                            if groundAt(xLeft, y + 1) == .sand {
+                                queue.append(point)
+                                point = Point(xLeft, y + 1)
+                            } else if groundAt(xRight, y + 1) == .sand {
+                                queue.append(point)
+                                point = Point(xRight, y + 1)
+                            } else {
+                                if groundAt(xLeft, y) == .clay {
+                                    xLeft += 1
+                                }
+                                if groundAt(xRight, y) == .clay {
+                                    xRight -= 1
+                                }
+                                for x in xLeft...xRight {
+                                    map[Point(x, y)] = .waterFlow
+                                }
+                                continue next
+                            }
+                        }
+                    }
+                }
             }
         }
 
-        let left = start.moved(.w)
-        let right = start.moved(.e)
-        switch (map[left, default: .sand], map[right, default: .sand]) {
-        case (.spring, _), (_, .spring):
-            fatalError()
-        case (.sand, .sand):
-            return [left, right]
-        case (.sand, .clay), (.sand, .water):
-            return [left]
-        case (.clay, .sand), (.water, .sand):
-            return [right]
-        case (.water, .clay):
-            return addWater(start: left, map: map)
-        case (.clay, .water):
-            return addWater(start: right, map: map)
-        case (.water, .water), (.clay, .clay):
-            let up = start.moved(.n)
-            if map[up, default: .sand] == .sand {
-                return [up]
-            }
-            fatalError()
-        }
+        // draw(map: map, maxY: maxY)
+
+        return map
     }
 
-    private func addWater(start point: Point, map: [Point: Ground]) -> [Point] {
-        let down1 = point.moved(.s)
-
-        switch map[down1, default: .sand] {
-        case .spring: fatalError()
-        case .sand: return [down1]
-        case .water: return addWater(start: down1, map: map)
-        case .clay:
-            let left = point.moved(.w)
-            let right = point.moved(.e)
-            switch (map[left, default: .sand], map[right, default: .sand]) {
-            case (.spring, _), (_, .spring):
-                fatalError()
-            case (.sand, .sand):
-                return [left, right]
-            case (.sand, .clay):
-                return [left]
-            case (.clay, .sand):
-                return [right]
-            case (.water, .clay):
-                return addWater(start: left, map: map)
-            case (.clay, .water):
-                return addWater(start: right, map: map)
-            case (.water, .sand):
-                return [right] + addWater(start: left, map: map)
-            case (.sand, .water):
-                return [left] + addWater(start: right, map: map)
-            case (.water, .water):
-                return addWater(start: left, map: map) + addWater(start: right, map: map)
-            case (.clay, .clay):
-                return []
-            }
-        }
-    }
-
-    private func draw(map: [Point: Ground]) {
-        for y in 0 ... 15 {
+    private func draw(map: [Point: Ground], maxY: Int) {
+        for y in 0 ... maxY {
             for x in 490 ... 510 {
                 let point = Point(x, y)
-                let ch: Character
-                switch map[point, default: .sand] {
-                case .sand: ch = "."
-                case .clay: ch = "#"
-                case .spring: ch = "+"
-                case .water: ch = "~"
-                }
-                print(ch, terminator: "")
+                let g = map[point, default: .sand]
+                print(g.rawValue, terminator: "")
             }
             print()
         }
+        print("----")
     }
 }
