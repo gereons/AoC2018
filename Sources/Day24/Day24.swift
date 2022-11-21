@@ -4,6 +4,8 @@
 // https://adventofcode.com/2018/day/24
 //
 
+// https://www.reddit.com/r/adventofcode/comments/a91ysq/2018_day_24_solutions/
+
 import AoCTools
 
 /*
@@ -45,6 +47,7 @@ private class Army: CustomStringConvertible {
         }
     }
 
+    var alive: Bool { units > 0 }
     var power: Int { units * damage }
 
     var attacking: Key?
@@ -67,14 +70,14 @@ private class Army: CustomStringConvertible {
         if !wi.isEmpty {
             wi = "(\(wi)) "
         }
-        return "\(units) units each with \(hp) hit points \(wi)with an attack that does \(dmg) \(damageType) damage at initiative \(initiative)"
+        return "\(key): \(units) units each with \(hp) hit points \(wi)with an attack that does \(dmg) \(damageType) damage at initiative \(initiative)"
     }
 
     init(_ id: Int, _ group: Group, _ str: String) {
         self.key = Key(id: id, group: group)
         let matches = try! Self.regex.firstMatch(in: str)!
-        units = Int(String(matches.1))!
-        initialUnits = units
+        initialUnits = Int(String(matches.1))!
+        units = initialUnits
         hp = Int(String(matches.2))!
 
         var weaknesses = [String]()
@@ -195,24 +198,22 @@ final class Day24: AOCDay {
             for ini in initiatives {
                 guard
                     let attacker = self.initiative[ini],
-                    attacker.units > 0,
+                    attacker.alive,
                     let attacking = attacker.attacking
                 else { continue }
 
                 let defender = armies[attacking]!
                 assert(defender.defending == attacker.key)
-                assert(defender.units > 0)
+                assert(defender.alive)
 
                 let damage = defender.damage(from: attacker)
                 let kills = damage / defender.hp
                 sumKills += kills
-                print(attacker.key, "deals", defender.damage(from: attacker), "dmg to", defender.key, "killing", kills)
+                // print(attacker.key, "deals", defender.damage(from: attacker), "dmg to", defender.key, "killing", kills)
                 defender.units = max(0, defender.units - kills)
             }
-            print("----")
 
             if sumKills == 0 {
-                print("draw")
                 return (winner: .infection, survivors: infectUnits)
             }
         }
@@ -220,14 +221,15 @@ final class Day24: AOCDay {
 
     private func assignOpponents() {
         let attackers = armies.values
-            .filter { $0.units > 0 }
+            .filter { $0.alive }
             .sorted(by: sortAttackers)
 
         for attacker in attackers {
             let opponents = armies.values
+                .filter { $0.alive }
                 .filter { $0.key.group != attacker.key.group }
                 .filter { $0.defending == nil }
-                .filter { $0.units > 0 }
+                .filter { $0.damage(from: attacker) != 0 }
                 .sorted(by: sortDefenders(attacker))
             guard let defender = opponents.first else {
                 continue
