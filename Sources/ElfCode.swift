@@ -53,7 +53,6 @@ enum ElfCode {
         private let ipRegister: Int
         private(set) var registers: [Int]
         private var ip = 0 // instruction pointer
-        private(set) var ic = 0 // instruction counter
 
         init(ipRegister: Int, registers: [Int] = [Int](repeating: 0, count: 6)) {
             self.ipRegister = ipRegister
@@ -61,27 +60,24 @@ enum ElfCode {
             self.registers = registers
         }
 
-        @discardableResult
-        func run(_ program: [Instruction], maxSteps: Int? = nil) -> Bool {
-            ic = 0
-            var prevR = -1
-            let r = 5
+        func run(_ program: [Instruction]) {
             while 0 ..< program.count ~= ip {
                 let instruction = program[ip]
-                print(ip, instruction.opcode, instruction.data, registers, terminator: " ")
+                // print(ip, instruction.opcode, instruction.data, registers)
                 execute(instruction)
-                print(registers)
-//                if registers[r] != prevR {
-//                    print(ip, registers)
-//                }
-                prevR = registers[r]
-                ic += 1
+            }
+        }
 
-                if let maxSteps, ic > maxSteps {
-                    return false
+        func run(_ program: [Instruction], breakAt breakInstruction: Int, watchRegister: Int) -> Int? {
+            while 0 ..< program.count ~= ip {
+                let instruction = program[ip]
+                // print(ip, instruction.opcode, instruction.data, registers)
+                execute(instruction)
+                if ip == breakInstruction {
+                    return registers[watchRegister]
                 }
             }
-            return true
+            return nil
         }
 
         private func execute(_ instruction: Instruction) {

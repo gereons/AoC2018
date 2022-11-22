@@ -19,18 +19,28 @@ final class Day21: AOCDay {
     }
 
     func part1() -> Int {
-        for r0 in [885103571386] {
-            let cpu = ElfCode.CPU(ipRegister: self.ipRegister, registers: [r0, 0, 0, 0, 0, 0])
-            let finished = cpu.run(program, maxSteps: 2000000)
-            if r0.isMultiple(of: 1000) { print(r0) }
-            if finished {
-                return cpu.ic
-            }
+        let cpu = ElfCode.CPU(ipRegister: ipRegister)
+        if let value = cpu.run(program, breakAt: 28, watchRegister: 5) {
+            return value
         }
         return 0
     }
 
     func part2() -> Int {
+        let cpu = ElfCode.CPU(ipRegister: ipRegister)
+        var seen = Set<Int>()
+        var lastSeen = 0
+
+        while true {
+            if let value = cpu.run(program, breakAt: 28, watchRegister: 5) {
+                if seen.contains(value) {
+                    return lastSeen
+                } else {
+                    seen.insert(value)
+                    lastSeen = value
+                }
+            }
+        }
         return 0
     }
 }
