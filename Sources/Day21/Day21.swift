@@ -41,6 +41,5 @@ final class Day21: AOCDay {
                 }
             }
         }
-        return 0
     }
 }
