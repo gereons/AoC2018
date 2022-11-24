@@ -19,7 +19,7 @@ private final class Unit {
     var hp = 200
     var position: Point
 
-    var alive: Bool { hp > 0 }
+    var isAlive: Bool { hp > 0 }
 
     init(type: Tile, position: Point, power: Int) {
         self.type = type
@@ -50,12 +50,8 @@ final class Day15: AOCDay {
         fatalError()
     }
 
-    private func distance(_ u1: Unit, _ u2: Unit) -> Int {
-        u1.position.distance(to: u2.position)
-    }
-
     private func simulateBattle(grid: [Point: Tile], elfPower: Int = 3) -> Int? {
-        var grid = grid
+        var turn = 0
 
         var units = grid
             .filter { $1 == .elf || $1 == .goblin }
@@ -63,93 +59,96 @@ final class Day15: AOCDay {
                 Unit(type: $1, position: $0, power: $1 == .elf ? elfPower : 3)
             }
 
-        var round = 0
-        var done = false
+        while true {
+            units.sort { $0.position < $1.position }
 
-    loop:
-        while !done {
-            units = units
-                .filter { $0.alive }
-                .sorted { $0.position < $1.position }
-
-            for unit in units {
-                if !unit.alive {
+            for i in 0..<units.count {
+                if !units[i].isAlive {
                     continue
                 }
-                let targets = units
-                    .filter { $0.alive && $0.type != unit.type }
-                    .sorted {
-                        if distance($0, unit) != distance($1, unit) {
-                            return distance($0, unit) < distance($1, unit)
-                        }
-                        return $0.position < $1.position
-                    }
 
-                if targets.isEmpty {
-                    done = true
-                    break loop
+                let targetPositions = units.filter { $0.type != units[i].type && $0.isAlive }.map { $0.position }
+                let currentActorPositions = units.filter { $0.isAlive }.map { $0.position }
+                var destinationPositions = [Point]()
+                var metaMap = [Point: Point]()
+                var maxDepth = Int.max
+                var steps = [(Int, Point)]()
+                steps.append((0, units[i].position))
+
+                // success
+                if targetPositions.isEmpty {
+                    return turn * units.filter { $0.isAlive }.map { $0.hp }.reduce(0, +)
                 }
 
-                if let target = targets.first, distance(target, unit) > 1 {
-                    var path = [Point: Point]()
-                    var queue = [unit.position]
-                    var nearest = [Point]()
-                    while !queue.isEmpty && nearest.isEmpty {
-                        let step = queue.removeFirst()
-                        for neighbor in step.neighbors().sorted() {
-                            switch grid[neighbor] {
-                            case .none:
-                                continue
-                            case .wall, unit.type:
-                                break
-                            case .floor:
-                                if path[neighbor] == nil {
-                                    path[neighbor] = step
-                                    queue.append(neighbor)
-                                }
-                            default:
-                                nearest.append(step)
-                            }
+            route:
+                while steps.count > 0 {
+                    let (currentDepth, currentStep) = steps.remove(at: 0)
+
+                    if currentDepth > maxDepth {
+                        continue
+                    }
+
+                    // check if the actor is in range of a target
+                    for target in currentStep.neighbors().sorted() {
+                        if targetPositions.contains(target) {
+                            maxDepth = currentDepth
+                            destinationPositions.append(currentStep)
+                            continue route
                         }
                     }
 
-                    if let chosen = nearest.sorted().first {
-                        var step = chosen
-                        while let p = path[step], p != unit.position {
-                            step = p
+                    for newStep in currentStep.neighbors().sorted() {
+                        if grid[newStep] == .wall || currentActorPositions.contains(newStep) || metaMap[newStep] != nil {
+                            continue
                         }
-                        grid[unit.position] = .floor
-                        unit.position = step
-                        grid[unit.position] = unit.type
+
+                        metaMap[newStep] = currentStep
+                        steps.append((currentDepth + 1, newStep))
                     }
                 }
 
-                let adjacent = targets
-                    .filter { distance($0, unit) == 1 }
-                    .sorted {
-                        if $0.hp != $1.hp {
-                            return $0.hp < $1.hp
+                destinationPositions.sort(by: <)
+
+                // route building
+                var route = [Point]()
+                if destinationPositions.count > 0 {
+                    var step = destinationPositions[0]
+                    route.append(step)
+                    // builds the route backwards
+                    while metaMap[step] != units[i].position {
+                        if metaMap[step] != nil {
+                            route.append(metaMap[step]!)
+                            step = metaMap[step]!
+                        } else {
+                            break
                         }
-                        return $0.position < $1.position
                     }
-                
-                if let target = adjacent.first {
-                    target.hp -= unit.power
-                    if !target.alive {
-                        if elfPower > 3 && target.type == .elf {
-                            return nil
+                    units[i].position = (route.last ?? units[i].position)
+                }
+
+                // find all potential target indices adjacent to the current position
+                var targetIndices = units.indices.filter {
+                    units[$0].isAlive &&
+                    units[$0].type != units[i].type &&
+                    units[$0].position.distance(to: units[i].position) == 1
+                }
+
+                if !targetIndices.isEmpty {
+                    targetIndices.sort {
+                        if units[$0].hp != units[$1].hp {
+                            return units[$0].hp < units[$1].hp
                         }
-                        grid[target.position] = .floor
+                        return units[$0].position < units[$1].position
+                    }
+
+                    units[targetIndices[0]].hp -= units[i].power
+                    if elfPower > 3 && units[targetIndices[0]].type == .elf && !units[targetIndices[0]].isAlive {
+                        return nil
                     }
                 }
             }
-            round += 1
+            turn += 1
         }
-
-        print("combat ends after \(round) rounds, elfPower=\(elfPower)")
-        let remainingHp = units
-            .filter { $0.alive }
-            .reduce(0) { $0 + $1.hp }
-        return round * remainingHp
     }
+    
 }
