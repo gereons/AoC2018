@@ -60,27 +60,29 @@ final class Day15: AOCDay {
             }
 
         while true {
-            units.sort { $0.position < $1.position }
+            units = units
+                .filter { $0.isAlive }
+                .sorted { $0.position < $1.position }
 
-            for i in 0..<units.count {
-                if !units[i].isAlive {
+            for unit in units {
+                if !unit.isAlive {
                     continue
                 }
 
-                let targetPositions = units.filter { $0.type != units[i].type && $0.isAlive }.map { $0.position }
-                let currentActorPositions = units.filter { $0.isAlive }.map { $0.position }
-                var destinationPositions = [Point]()
-                var metaMap = [Point: Point]()
+                let targets = Set(units.filter { $0.type != unit.type && $0.isAlive }.map { $0.position })
+                let currentUnitPositions = Set(units.filter { $0.isAlive }.map { $0.position })
+                var destinations = [Point]()
+                var path = [Point: Point]()
                 var maxDepth = Int.max
                 var steps = [(Int, Point)]()
-                steps.append((0, units[i].position))
+                steps.append((0, unit.position))
 
-                // success
-                if targetPositions.isEmpty {
-                    return turn * units.filter { $0.isAlive }.map { $0.hp }.reduce(0, +)
+                // battle ends when no target remains
+                if targets.isEmpty {
+                    return turn * units.filter { $0.isAlive }.reduce(0) { $0 + $1.hp }
                 }
 
-            route:
+            loop:
                 while steps.count > 0 {
                     let (currentDepth, currentStep) = steps.remove(at: 0)
 
@@ -88,61 +90,51 @@ final class Day15: AOCDay {
                         continue
                     }
 
-                    // check if the actor is in range of a target
                     for target in currentStep.neighbors().sorted() {
-                        if targetPositions.contains(target) {
+                        if targets.contains(target) {
                             maxDepth = currentDepth
-                            destinationPositions.append(currentStep)
-                            continue route
+                            destinations.append(currentStep)
+                            continue loop
                         }
                     }
 
                     for newStep in currentStep.neighbors().sorted() {
-                        if grid[newStep] == .wall || currentActorPositions.contains(newStep) || metaMap[newStep] != nil {
+                        if grid[newStep] == .wall || currentUnitPositions.contains(newStep) || path[newStep] != nil {
                             continue
                         }
 
-                        metaMap[newStep] = currentStep
+                        path[newStep] = currentStep
                         steps.append((currentDepth + 1, newStep))
                     }
                 }
 
-                destinationPositions.sort(by: <)
-
-                // route building
-                var route = [Point]()
-                if destinationPositions.count > 0 {
-                    var step = destinationPositions[0]
-                    route.append(step)
-                    // builds the route backwards
-                    while metaMap[step] != units[i].position {
-                        if metaMap[step] != nil {
-                            route.append(metaMap[step]!)
-                            step = metaMap[step]!
-                        } else {
-                            break
-                        }
+                // move unit
+                if let step = destinations.min(by: <) {
+                    var newPosition = step
+                    while let p = path[newPosition], p != unit.position {
+                        newPosition = p
                     }
-                    units[i].position = (route.last ?? units[i].position)
+                    unit.position = newPosition
                 }
 
-                // find all potential target indices adjacent to the current position
-                var targetIndices = units.indices.filter {
-                    units[$0].isAlive &&
-                    units[$0].type != units[i].type &&
-                    units[$0].position.distance(to: units[i].position) == 1
-                }
-
-                if !targetIndices.isEmpty {
-                    targetIndices.sort {
-                        if units[$0].hp != units[$1].hp {
-                            return units[$0].hp < units[$1].hp
+                // find adjacent units
+                let adjacents = units
+                    .filter {
+                        $0.isAlive &&
+                        $0.type != unit.type &&
+                        $0.position.distance(to: unit.position) == 1
+                    }
+                    .sorted {
+                        if $0.hp != $1.hp {
+                            return $0.hp < $1.hp
                         }
-                        return units[$0].position < units[$1].position
+                        return $0.position < $1.position
                     }
 
-                    units[targetIndices[0]].hp -= units[i].power
-                    if elfPower > 3 && units[targetIndices[0]].type == .elf && !units[targetIndices[0]].isAlive {
+                // deal damage
+                if let adjacent = adjacents.first {
+                    adjacent.hp -= unit.power
+                    if elfPower > 3 && adjacent.type == .elf && !adjacent.isAlive {
                         return nil
                     }
                 }
@@ -150,5 +142,4 @@ final class Day15: AOCDay {
             turn += 1
         }
     }
-    
 }
