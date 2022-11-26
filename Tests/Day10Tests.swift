@@ -37,12 +37,7 @@ final class Day10Tests: XCTestCase {
             position=<-3,  6> velocity=< 2, -1>
             """
 
-        let day = Day10(rawInput: input)
-        XCTAssertEqual(day.part1(), 0)
-    }
-
-    func testDay10_2() throws {
-        let day = Day10(rawInput: "bar")
-        XCTAssertEqual(day.part2(), 0)
+        let day = Day10(rawInput: input, height: 9)
+        XCTAssertEqual(day.part1(), 3)
     }
 }

@@ -27,10 +27,16 @@ private class Light {
 
 final class Day10: AOCDay {
     private let lights: [Light]
+    let height: Int
 
-    init(rawInput: String? = nil) {
+    convenience init(rawInput: String? = nil) {
+        self.init(rawInput: rawInput, height: 10)
+    }
+
+    init(rawInput: String? = nil, height: Int) {
         let input = rawInput ?? Self.rawInput
         lights = input.lines.map { Light($0) }
+        self.height = height
     }
 
     func part1() -> Int {
@@ -41,7 +47,7 @@ final class Day10: AOCDay {
             let grid = Grid(points: points)
 
             let minY = points.keys.min { $0.y < $1.y }!.y
-            if grid.maxY - minY < 10 {
+            if grid.maxY - minY < height {
                 grid.draw()
                 break
             }

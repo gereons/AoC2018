@@ -174,7 +174,7 @@ extension Day22: Pathfinding {
         }
     }
 
-    func hScore(from: PathNode, to: PathNode) -> Int {
+    func distance(from: PathNode, to: PathNode) -> Int {
         from.point.distance(to: to.point)
     }
 }

@@ -41,7 +41,7 @@ final class Day20: AOCDay {
         for ch in input {
             switch ch {
             case "(": stack.push(current)
-            case ")": current = stack.pop()
+            case ")": current = stack.pop()!
             case "|": current = stack.peek()!
             case "N", "W", "E", "S":
                 let distance = grid[current]! + 1
