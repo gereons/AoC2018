@@ -37,7 +37,7 @@ final class Day10Tests: XCTestCase {
             position=<-3,  6> velocity=< 2, -1>
             """
 
-        let day = Day10(rawInput: input, height: 9)
+        let day = Day10(input: input, height: 9)
         XCTAssertEqual(day.part1(), 3)
     }
 }

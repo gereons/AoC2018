@@ -21,7 +21,7 @@ final class Day12Tests: XCTestCase {
             ###.# => #
             ####. => #
             """
-        let day = Day12(rawInput: input)
+        let day = Day12(input: input)
         XCTAssertEqual(day.part1(), 325)
     }
 }

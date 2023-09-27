@@ -9,8 +9,8 @@ import AoCTools
 final class Day22: AOCDay {
     let target: Point
     let depth: Int
-    init(rawInput: String? = nil) {
-        let input = rawInput ?? Self.rawInput
+    init(input: String? = nil) {
+        let input = input ?? Self.input
         var depth = 0
         var target = Point.zero
         for line in input.lines {

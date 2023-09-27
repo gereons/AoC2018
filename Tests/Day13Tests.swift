@@ -11,7 +11,7 @@ final class Day13Tests: XCTestCase {
             \-+-/  \-+--/
               \------/
             """#
-        let day = Day13(rawInput: track)
+        let day = Day13(input: track)
         XCTAssertEqual(day.part1(), "7,3")
     }
 
@@ -25,7 +25,7 @@ final class Day13Tests: XCTestCase {
               |   ^
               \<->/
             """#
-        let day = Day13(rawInput: track)
+        let day = Day13(input: track)
         XCTAssertEqual(day.part2(), "6,4")
     }
 }

@@ -5,7 +5,7 @@ import AoCTools
 final class Day11Tests: XCTestCase {
 
     func testDay11_summedArea() throws {
-        let day = Day11(rawInput: "0")
+        let day = Day11(input: "0")
         let input = [
             [0, 0, 0, 0, 0, 0, 0],
             [0,31, 2, 4,33, 5,36],
@@ -28,19 +28,19 @@ final class Day11Tests: XCTestCase {
     }
 
     func testDay11_powerLevel() throws {
-        XCTAssertEqual(Day11(rawInput: "8").powerLevel(for: 3, y: 5), 4)
-        XCTAssertEqual(Day11(rawInput: "57").powerLevel(for: 122, y: 79), -5)
-        XCTAssertEqual(Day11(rawInput: "39").powerLevel(for: 217, y: 196), 0)
-        XCTAssertEqual(Day11(rawInput: "71").powerLevel(for: 101,y: 153), 4)
+        XCTAssertEqual(Day11(input: "8").powerLevel(for: 3, y: 5), 4)
+        XCTAssertEqual(Day11(input: "57").powerLevel(for: 122, y: 79), -5)
+        XCTAssertEqual(Day11(input: "39").powerLevel(for: 217, y: 196), 0)
+        XCTAssertEqual(Day11(input: "71").powerLevel(for: 101,y: 153), 4)
     }
 
     func testDay11_1() throws {
-        XCTAssertEqual(Day11(rawInput: "18").part1(), "33,45")
-        XCTAssertEqual(Day11(rawInput: "42").part1(), "21,61")
+        XCTAssertEqual(Day11(input: "18").part1(), "33,45")
+        XCTAssertEqual(Day11(input: "42").part1(), "21,61")
     }
 
     func testDay11_2() throws {
-        XCTAssertEqual(Day11(rawInput: "18").part2(), "90,269,16")
-        XCTAssertEqual(Day11(rawInput: "42").part2(), "232,251,12")
+        XCTAssertEqual(Day11(input: "18").part2(), "90,269,16")
+        XCTAssertEqual(Day11(input: "42").part2(), "232,251,12")
     }
 }

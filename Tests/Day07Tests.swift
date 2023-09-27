@@ -3,7 +3,7 @@ import XCTest
 
 final class Day07Tests: XCTestCase {
     func testDay07_1() throws {
-        let day = Day07(rawInput: """
+        let day = Day07(input: """
             Step C must be finished before step A can begin.
             Step C must be finished before step F can begin.
             Step A must be finished before step B can begin.
@@ -16,7 +16,7 @@ final class Day07Tests: XCTestCase {
     }
 
     func testDay07_2() throws {
-        let day = Day07(rawInput: """
+        let day = Day07(input: """
             Step C must be finished before step A can begin.
             Step C must be finished before step F can begin.
             Step A must be finished before step B can begin.

@@ -70,8 +70,8 @@ final class Day16: AOCDay {
     private let samples: [Sample]
     private let testProgram: [[Int]]
 
-    init(rawInput: String? = nil) {
-        let input = rawInput ?? Self.rawInput
+    init(input: String? = nil) {
+        let input = input ?? Self.input
         let sampleInput = input.lines.chunked(4)
 
         var samples = [Sample]()

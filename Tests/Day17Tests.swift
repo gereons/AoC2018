@@ -13,7 +13,7 @@ final class Day17Tests: XCTestCase {
             x=504, y=10..13
             y=13, x=498..504
             """
-        let day = Day17(rawInput: input)
+        let day = Day17(input: input)
         XCTAssertEqual(day.part1(), 57)
     }
 
@@ -28,7 +28,7 @@ final class Day17Tests: XCTestCase {
             x=504, y=10..13
             y=13, x=498..504
             """
-        let day = Day17(rawInput: input)
+        let day = Day17(input: input)
         XCTAssertEqual(day.part2(), 29)
     }
 }

@@ -29,12 +29,12 @@ final class Day10: AOCDay {
     private let lights: [Light]
     let height: Int
 
-    convenience init(rawInput: String? = nil) {
-        self.init(rawInput: rawInput, height: 10)
+    convenience init(input: String? = nil) {
+        self.init(input: input, height: 10)
     }
 
-    init(rawInput: String? = nil, height: Int) {
-        let input = rawInput ?? Self.rawInput
+    init(input: String? = nil, height: Int) {
+        let input = input ?? Self.input
         lights = input.lines.map { Light($0) }
         self.height = height
     }

@@ -19,8 +19,8 @@ final class Day17: AOCDay {
     private let maxY: Int
     private let minY: Int
 
-    init(rawInput: String? = nil) {
-        let input = rawInput ?? Self.rawInput
+    init(input: String? = nil) {
+        let input = input ?? Self.input
 
         let regex = Regex(pattern: #"(.)=(\d*), (.)=(\d*)\.\.(\d*)"#)
 

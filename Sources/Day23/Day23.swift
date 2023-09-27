@@ -60,8 +60,8 @@ class BronKerbosch<T: Hashable> {
 final class Day23: AOCDay {
     private let bots: [Bot]
 
-    init(rawInput: String? = nil) {
-        let input = rawInput ?? Self.rawInput
+    init(input: String? = nil) {
+        let input = input ?? Self.input
         bots = input.lines.map { Bot($0) }
     }
 

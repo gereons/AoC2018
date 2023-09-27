@@ -39,8 +39,8 @@ private struct Rect {
 
 final class Day03: AOCDay {
     private let rects: [Rect]
-    init(rawInput: String? = nil) {
-        let input = rawInput ?? Self.rawInput
+    init(input: String? = nil) {
+        let input = input ?? Self.input
         rects = input.lines.map { Rect($0) }
     }
 

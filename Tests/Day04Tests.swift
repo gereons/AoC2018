@@ -3,7 +3,7 @@ import XCTest
 
 final class Day04Tests: XCTestCase {
     func testDay04_1() throws {
-        let day = Day04(rawInput: """
+        let day = Day04(input: """
             [1918-11-01 00:00] Guard #10 begins shift
             [1918-11-01 00:05] falls asleep
             [1918-11-01 00:25] wakes up
@@ -26,7 +26,7 @@ final class Day04Tests: XCTestCase {
     }
 
     func testDay04_2() throws {
-        let day = Day04(rawInput: """
+        let day = Day04(input: """
             [1918-11-01 00:00] Guard #10 begins shift
             [1918-11-01 00:05] falls asleep
             [1918-11-01 00:25] wakes up

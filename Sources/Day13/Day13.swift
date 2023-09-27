@@ -25,7 +25,7 @@ private enum Track {
     }
 }
 
-extension Point.Direction {
+extension Direction {
     var char: String {
         switch self {
         case .n: return "^"
@@ -40,11 +40,11 @@ extension Point.Direction {
 private class Cart {
     let id = UUID()
     var position: Point
-    var direction: Point.Direction
+    var direction: Direction
     var turnCount = 0
     var crashed = false
 
-    init(position: Point, direction: Point.Direction) {
+    init(position: Point, direction: Direction) {
         self.position = position
         self.direction = direction
     }
@@ -58,8 +58,8 @@ final class Day13: AOCDay {
     private let track: [Point: Track]
     private let carts: [Cart]
 
-    init(rawInput: String? = nil) {
-        let input = rawInput ?? Self.rawInput
+    init(input: String? = nil) {
+        let input = input ?? Self.input
 
         var track = [Point: Track]()
         var carts = [Cart]()
@@ -149,24 +149,24 @@ final class Day13: AOCDay {
             newPoint = point.moved(cart.direction)
         case .curve1: // a "/" curve
             let dir = cart.direction
-            let newDir: Point.Direction
+            let newDir: Direction
             switch dir {
-            case .n: newDir = Point.Direction.e
-            case .s: newDir = Point.Direction.w
-            case .w: newDir = Point.Direction.s
-            case .e: newDir = Point.Direction.n
+            case .n: newDir = .e
+            case .s: newDir = .w
+            case .w: newDir = .s
+            case .e: newDir = .n
             default: fatalError()
             }
             newPoint = point + newDir.offset
             cart.direction = newDir
         case .curve2: // a "\" curve
             let dir = cart.direction
-            let newDir: Point.Direction
+            let newDir: Direction
             switch dir {
-            case .n: newDir = Point.Direction.w
-            case .s: newDir = Point.Direction.e
-            case .w: newDir = Point.Direction.n
-            case .e: newDir = Point.Direction.s
+            case .n: newDir = .w
+            case .s: newDir = .e
+            case .w: newDir = .n
+            case .e: newDir = .s
             default: fatalError()
             }
             newPoint = point + newDir.offset

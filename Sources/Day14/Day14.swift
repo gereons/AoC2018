@@ -8,10 +8,11 @@ import AoCTools
 
 final class Day14: AOCDay {
     let recipes: Int
-    let input: String
-    init(rawInput: String? = nil) {
-        input = rawInput ?? Self.rawInput
-        recipes = Int(input)!
+    let rawInput: String
+
+    init(input: String? = nil) {
+        rawInput = input ?? Self.input
+        recipes = Int(rawInput)!
     }
 
     func part1() -> String {
@@ -42,7 +43,7 @@ final class Day14: AOCDay {
         var elf1 = 0
         var elf2 = 1
 
-        let digits = input.map { Int(String($0))! }
+        let digits = rawInput.map { Int(String($0))! }
 
         while true {
             let sum = scores[elf1] + scores[elf2]

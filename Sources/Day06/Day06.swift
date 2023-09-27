@@ -10,12 +10,12 @@ final class Day06: AOCDay {
     let points: [Point]
     let distanceLimit: Int
 
-    convenience init(rawInput: String? = nil) {
-        self.init(rawInput: rawInput, distanceLimit: 10000)
+    convenience init(input: String? = nil) {
+        self.init(input: input, distanceLimit: 10000)
     }
 
-    init(rawInput: String? = nil, distanceLimit: Int) {
-        let input = rawInput ?? Self.rawInput
+    init(input: String? = nil, distanceLimit: Int) {
+        let input = input ?? Self.input
         var points = [Point]()
         for line in input.lines {
             let parts = line.components(separatedBy: ", ")

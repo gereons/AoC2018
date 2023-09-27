@@ -13,7 +13,7 @@ final class Day19Tests: XCTestCase {
             seti 8 0 4
             seti 9 0 5
             """
-        let day = Day19(rawInput: input)
+        let day = Day19(input: input)
         XCTAssertEqual(day.part1(), 6)
     }
 }

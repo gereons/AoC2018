@@ -10,9 +10,9 @@ import AoCTools
 final class Day09: AOCDay {
     let players: Int
     let lastMarble: Int
-    init(rawInput: String? = nil) {
+    init(input: String? = nil) {
         // "10 players; last marble is worth 1618 points"
-        let input = rawInput ?? Self.rawInput
+        let input = input ?? Self.input
         let parts = input.components(separatedBy: " ")
         players = Int(parts[0])!
         lastMarble = Int(parts[6])!

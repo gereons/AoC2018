@@ -30,10 +30,9 @@ private final class Unit {
 
 final class Day15: AOCDay {
     private let grid: Grid<Tile>
-    let input: String
 
-    init(rawInput: String? = nil) {
-        input = rawInput ?? Self.rawInput
+    init(input: String? = nil) {
+        let input = input ?? Self.input
         grid = Grid<Tile>.parse(input)
     }
 

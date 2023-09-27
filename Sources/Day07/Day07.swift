@@ -51,12 +51,12 @@ final class Day07: AOCDay {
     private let workers: Int
     private let baseDuration: Int
 
-    convenience init(rawInput: String?) {
-        self.init(rawInput: rawInput, workers: 5, baseDuration: 60)
+    convenience init(input: String?) {
+        self.init(input: input, workers: 5, baseDuration: 60)
     }
 
-    init(rawInput: String? = nil, workers: Int, baseDuration: Int) {
-        let input = rawInput ?? Self.rawInput
+    init(input: String? = nil, workers: Int, baseDuration: Int) {
+        let input = input ?? Self.input
 
         var steps = [String: Step]()
         for line in input.lines {

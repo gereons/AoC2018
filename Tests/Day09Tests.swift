@@ -14,7 +14,7 @@ final class Day09Tests: XCTestCase {
         ]
 
         for (input, score) in testInput {
-            let day = Day09(rawInput: input)
+            let day = Day09(input: input)
             XCTAssertEqual(day.part1(), score)
         }
     }

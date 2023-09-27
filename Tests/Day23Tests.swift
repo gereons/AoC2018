@@ -14,12 +14,12 @@ final class Day23Tests: XCTestCase {
             pos=<1,1,2>, r=1
             pos=<1,3,1>, r=1
             """
-        let day = Day23(rawInput: input)
+        let day = Day23(input: input)
         XCTAssertEqual(day.part1(), 7)
     }
 
     func testDay23_2() throws {
-        let day = Day23(rawInput: """
+        let day = Day23(input: """
             pos=<10,12,12>, r=2
             pos=<12,14,12>, r=2
             pos=<16,12,12>, r=4

@@ -21,8 +21,8 @@ final class Day12: AOCDay {
     let initialState: [Int: Bool]
     private let rules: [[Bool]: Bool]
 
-    init(rawInput: String? = nil) {
-        let input = (rawInput ?? Self.rawInput).lines
+    init(input: String? = nil) {
+        let input = (input ?? Self.input).lines
 
         let line0 = input[0].components(separatedBy: " ")
         initialState = Dictionary(uniqueKeysWithValues: line0[2].enumerated().map { ($0.offset, $0.element == "#") })

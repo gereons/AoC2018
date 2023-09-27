@@ -8,25 +8,25 @@ import AoCTools
 
 
 final class Day20: AOCDay {
-    let input: String
-    init(rawInput: String? = nil) {
-        input = rawInput ?? Self.rawInput
+    let rawInput: String
+    init(input: String? = nil) {
+        rawInput = input ?? Self.input
     }
 
     func part1() -> Int {
-        let grid = fillGrid(input)
+        let grid = fillGrid(rawInput)
 
         return grid.values.max(by: <)!
     }
 
     func part2() -> Int {
-        let grid = fillGrid(input)
+        let grid = fillGrid(rawInput)
 
         return grid.values.count { $0 >= 1000}
     }
 
     private func fillGrid(_ input: String) -> [Point: Int] {
-        let move: [Character: Point.Direction] = [
+        let move: [Character: Direction] = [
             "N": .n,
             "W": .w,
             "E": .e,

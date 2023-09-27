@@ -128,8 +128,8 @@ final class Day24: AOCDay {
     private let armies: [Army.Key: Army]
     private let initiative: [Int: Army]
 
-    init(rawInput: String? = nil) {
-        let input = rawInput ?? Self.rawInput
+    init(input: String? = nil) {
+        let input = input ?? Self.input
 
         var armies = [Army]()
         var group = Army.Group.immuneSystem
@@ -174,7 +174,7 @@ final class Day24: AOCDay {
 
             let result = battle()
             if result.winner == .immuneSystem {
-                print("min boost: \(boost)")
+                // print("min boost: \(boost)")
                 return result.survivors
             }
         }

@@ -13,12 +13,12 @@ Infection:
 """
 
     func testDay24_1() throws {
-        let day = Day24(rawInput: input)
+        let day = Day24(input: input)
         XCTAssertEqual(day.part1(), 5216)
     }
 
     func testDay24_2() throws {
-        let day = Day24(rawInput: input)
+        let day = Day24(input: input)
         XCTAssertEqual(day.part2(), 51)
     }
 }
