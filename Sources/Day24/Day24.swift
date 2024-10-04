@@ -54,7 +54,7 @@ private class Army: CustomStringConvertible {
     var defending: Key?
     var boost = 0
 
-    static let regex = #/(\d*) units each with (\d*) hit points (\(((.*) to (.*); )?(.*) to (.*)\) )?with an attack that does (\d*) (.*) damage at initiative (\d*)/#
+    nonisolated(unsafe) static let regex = #/(\d*) units each with (\d*) hit points (\(((.*) to (.*); )?(.*) to (.*)\) )?with an attack that does (\d*) (.*) damage at initiative (\d*)/#
 
     var description: String {
         var wi = ""
@@ -128,9 +128,7 @@ final class Day24: AOCDay {
     private let armies: [Army.Key: Army]
     private let initiative: [Int: Army]
 
-    init(input: String? = nil) {
-        let input = input ?? Self.input
-
+    init(input: String) {
         var armies = [Army]()
         var group = Army.Group.immuneSystem
         var id = 1
@@ -220,7 +218,7 @@ final class Day24: AOCDay {
     }
 
     private func assignOpponents() {
-        let attackers = armies.values
+        let attackers = try! armies.values
             .filter { $0.alive }
             .sorted(by: sortAttackers)
 

@@ -21,9 +21,7 @@ private enum Tile: Character, Drawable {
 final class Day18: AOCDay {
     private let area: [Point: Tile]
 
-    init(input: String? = nil) {
-        let input = input ?? Self.input
-
+    init(input: String) {
         var area = [Point: Tile]()
         for (y, line) in input.lines.enumerated() {
             for (x, ch) in line.enumerated() {

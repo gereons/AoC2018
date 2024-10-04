@@ -10,7 +10,7 @@ private struct Bot: Hashable {
     let point: Point3
     let range: Int
 
-    static let regex = Regex(pattern: #"pos=<(-?\d*),(-?\d*),(-?\d*)>, r=(\d*)"#)
+    nonisolated(unsafe) static let regex = Regex(pattern: #"pos=<(-?\d*),(-?\d*),(-?\d*)>, r=(\d*)"#)
 
     init(_ str: String) {
         // pos=<0,0,0>, r=4
@@ -60,8 +60,7 @@ class BronKerbosch<T: Hashable> {
 final class Day23: AOCDay {
     private let bots: [Bot]
 
-    init(input: String? = nil) {
-        let input = input ?? Self.input
+    init(input: String) {
         bots = input.lines.map { Bot($0) }
     }
 

@@ -7,10 +7,21 @@
 import AoCTools
 
 final class Day22: AOCDay {
-    let target: Point
-    let depth: Int
-    init(input: String? = nil) {
-        let input = input ?? Self.input
+    final class Maze {
+        let target: Point
+        let depth: Int
+
+        static nonisolated(unsafe) private var memo = [Point: Int]()
+
+        init(target: Point, depth: Int) {
+            self.target = target
+            self.depth = depth
+        }
+    }
+
+    let maze: Maze
+
+    init(input: String) {
         var depth = 0
         var target = Point.zero
         for line in input.lines {
@@ -25,15 +36,14 @@ final class Day22: AOCDay {
                 fatalError()
             }
         }
-        self.target = target
-        self.depth = depth
+        self.maze = Maze(target: target, depth: depth)
     }
 
     func part1() -> Int {
         var sum = 0
-        for x in 0...target.x {
-            for y in 0...target.y {
-                let level = erosionLevel(geologicIndex(for: Point(x, y)))
+        for x in 0...maze.target.x {
+            for y in 0...maze.target.y {
+                let level = maze.erosionLevel(maze.geologicIndex(for: Point(x, y)))
                 sum += level % 3
             }
         }
@@ -41,12 +51,12 @@ final class Day22: AOCDay {
     }
 
     func part2() -> Int {
-        let pathfinder = AStarPathfinder(map: self)
+        let pathfinder = AStarPathfinder(map: maze)
 
-        let path = pathfinder.shortestPath(from: PathNode(point: .zero, equipped: .torch),
-                                           to: PathNode(point: target, equipped: .torch))
+        let path = pathfinder.shortestPath(from: Maze.PathNode(point: .zero, equipped: .torch),
+                                           to: Maze.PathNode(point: maze.target, equipped: .torch))
 
-        var prevEquipped: Tool? = .torch
+        var prevEquipped: Maze.Tool? = .torch
         var switches = 0
         for p in path {
             if p.equipped != prevEquipped {
@@ -57,7 +67,9 @@ final class Day22: AOCDay {
 
         return path.count + switches * 7
     }
+}
 
+extension Day22.Maze {
     /*
      The region at 0,0 (the mouth of the cave) has a geologic index of 0.
      The region at the coordinates of the target has a geologic index of 0.
@@ -65,10 +77,7 @@ final class Day22: AOCDay {
      If the region's X coordinate is 0, the geologic index is its Y coordinate times 48271.
      Otherwise, the region's geologic index is the result of multiplying the erosion levels of the regions at X-1,Y and X,Y-1.
      */
-
-    static private var memo = [Point: Int]()
-
-    private func geologicIndex(for point: Point) -> Int {
+    func geologicIndex(for point: Point) -> Int {
         if point == .zero || point == self.target {
             return 0
         }
@@ -86,12 +95,12 @@ final class Day22: AOCDay {
         return level
     }
 
-    private func erosionLevel(_ index: Int) -> Int {
+    func erosionLevel(_ index: Int) -> Int {
         (index + depth) % 20183
     }
 }
 
-extension Day22: Pathfinding {
+extension Day22.Maze: Pathfinding {
     typealias Coordinate = PathNode
 
     enum Terrain {

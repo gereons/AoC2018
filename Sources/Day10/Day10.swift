@@ -11,7 +11,7 @@ private class Light {
     let start: Point
     let velocity: Point
 
-    static let regex = Regex(pattern: #"position=< *(-?\d*), *(-?\d*)> velocity=< *(-?\d*), *(-?\d*)>"#)
+    nonisolated(unsafe) static let regex = Regex(pattern: #"position=< *(-?\d*), *(-?\d*)> velocity=< *(-?\d*), *(-?\d*)>"#)
 
     init(_ str: String) {
         let matches = Self.regex.matches(in: str)
@@ -29,12 +29,11 @@ final class Day10: AOCDay {
     private let lights: [Light]
     let height: Int
 
-    convenience init(input: String? = nil) {
+    convenience init(input: String) {
         self.init(input: input, height: 10)
     }
 
-    init(input: String? = nil, height: Int) {
-        let input = input ?? Self.input
+    init(input: String, height: Int) {
         lights = input.lines.map { Light($0) }
         self.height = height
     }

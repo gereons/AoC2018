@@ -10,9 +10,7 @@ final class Day21: AOCDay {
     let ipRegister: Int
     let program: [ElfCode.Instruction]
 
-    init(input: String? = nil) {
-        let input = input ?? Self.input
-
+    init(input: String) {
         let (ipRegister, program) = ElfCode.parse(input.lines)
         self.ipRegister = ipRegister!
         self.program = program

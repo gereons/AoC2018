@@ -2,6 +2,7 @@ import XCTest
 @testable import AdventOfCode
 import AoCTools
 
+@MainActor
 final class Day11Tests: XCTestCase {
 
     func testDay11_summedArea() throws {

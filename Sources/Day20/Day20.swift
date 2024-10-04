@@ -9,8 +9,8 @@ import AoCTools
 
 final class Day20: AOCDay {
     let rawInput: String
-    init(input: String? = nil) {
-        rawInput = input ?? Self.input
+    init(input: String) {
+        rawInput = input
     }
 
     func part1() -> Int {
@@ -45,7 +45,7 @@ final class Day20: AOCDay {
             case "|": current = stack.peek()!
             case "N", "W", "E", "S":
                 let distance = grid[current]! + 1
-                current = current.moved(move[ch]!)
+                current = current.moved(to: move[ch]!)
                 grid[current] = min(grid[current, default: Int.max], distance)
             case "^", "$": continue
             default: fatalError()

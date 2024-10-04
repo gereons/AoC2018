@@ -7,14 +7,14 @@
 import AoCTools
 
 final class Day01: AOCDay {
-    let input: [Int]
-    init(input: String? = nil) {
-        let input = input ?? Self.input
-        self.input = input.asInts(separator: "\n")
+    let ints: [Int]
+
+    init(input: String) {
+        self.ints = input.asInts(separator: "\n")
     }
 
     func part1() -> Int {
-        return input.reduce(0) { $0 + $1}
+        return ints.reduce(0) { $0 + $1}
     }
 
     func part2() -> Int {
@@ -22,7 +22,7 @@ final class Day01: AOCDay {
 
         var frequency = 0
         while true {
-            for change in input {
+            for change in ints {
                 frequency += change
                 if seen.contains(frequency) {
                     return frequency

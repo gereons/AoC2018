@@ -7,15 +7,15 @@
 import AoCTools
 
 final class Day02: AOCDay {
-    let input: [String]
-    init(input: String? = nil) {
-        self.input = (input ?? Self.input).lines
+    let lines: [String]
+    init(input: String) {
+        self.lines = input.lines
     }
 
     func part1() -> Int {
         var totalDoubles = 0
         var totalTriples = 0
-        for line in input {
+        for line in lines {
             let (doubles, triples) = check(line)
             if doubles > 0 {
                 totalDoubles += 1
@@ -38,8 +38,8 @@ final class Day02: AOCDay {
     }
 
     func part2() -> String {
-        for line in input {
-            for compare in input {
+        for line in lines {
+            for compare in lines {
                 assert(line.count == compare.count)
                 var diffs = 0
                 var diffIdx = line.startIndex

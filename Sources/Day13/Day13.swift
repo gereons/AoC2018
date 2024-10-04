@@ -58,9 +58,7 @@ final class Day13: AOCDay {
     private let track: [Point: Track]
     private let carts: [Cart]
 
-    init(input: String? = nil) {
-        let input = input ?? Self.input
-
+    init(input: String) {
         var track = [Point: Track]()
         var carts = [Cart]()
 
@@ -144,9 +142,9 @@ final class Day13: AOCDay {
         var newPoint: Point?
         switch track[point] {
         case .straightVertical:
-            newPoint = point.moved(cart.direction)
+            newPoint = point.moved(to: cart.direction)
         case .straightHorizontal:
-            newPoint = point.moved(cart.direction)
+            newPoint = point.moved(to: cart.direction)
         case .curve1: // a "/" curve
             let dir = cart.direction
             let newDir: Direction

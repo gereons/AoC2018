@@ -5,6 +5,7 @@
 //
 
 import AoCTools
+import Algorithms
 
 private struct Sample {
     let before: [Int]
@@ -70,15 +71,14 @@ final class Day16: AOCDay {
     private let samples: [Sample]
     private let testProgram: [[Int]]
 
-    init(input: String? = nil) {
-        let input = input ?? Self.input
-        let sampleInput = input.lines.chunked(4)
+    init(input: String) {
+        let sampleInput = input.lines.chunks(ofCount: 4)
 
         var samples = [Sample]()
         var program = [[Int]]()
         for sample in sampleInput where sample.count == 4 {
-            if sample[0].hasPrefix("Before:") {
-                samples.append(Sample(sample))
+            if sample.first!.hasPrefix("Before:") {
+                samples.append(Sample(Array(sample)))
             } else {
                 for line in sample where !line.isEmpty {
                     program.append(line.asInts(separator: " "))

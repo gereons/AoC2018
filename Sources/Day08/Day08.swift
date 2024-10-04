@@ -37,14 +37,13 @@ private class Node {
 }
 
 final class Day08: AOCDay {
-    let input: [Int]
-    init(input: String? = nil) {
-        let input = input ?? Self.input
-        self.input = input.components(separatedBy: " ").map { Int($0)! }
+    let ints: [Int]
+    init(input: String) {
+        self.ints = input.components(separatedBy: " ").map { Int($0)! }
     }
 
     func part1() -> Int {
-        var iterator = input.makeIterator()
+        var iterator = ints.makeIterator()
         let root = createNode(&iterator)
 
         return root.metadataSum
@@ -68,7 +67,7 @@ final class Day08: AOCDay {
     }
 
     func part2() -> Int {
-        var iterator = input.makeIterator()
+        var iterator = ints.makeIterator()
         let root = createNode(&iterator)
 
         return root.nodeValue

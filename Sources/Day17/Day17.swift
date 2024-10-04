@@ -19,9 +19,7 @@ final class Day17: AOCDay {
     private let maxY: Int
     private let minY: Int
 
-    init(input: String? = nil) {
-        let input = input ?? Self.input
-
+    init(input: String) {
         let regex = Regex(pattern: #"(.)=(\d*), (.)=(\d*)\.\.(\d*)"#)
 
         var map = [Point: Ground]()

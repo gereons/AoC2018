@@ -31,8 +31,7 @@ private final class Unit {
 final class Day15: AOCDay {
     private let grid: Grid<Tile>
 
-    init(input: String? = nil) {
-        let input = input ?? Self.input
+    init(input: String) {
         grid = Grid<Tile>.parse(input)
     }
 

@@ -10,9 +10,9 @@ final class Day14: AOCDay {
     let recipes: Int
     let rawInput: String
 
-    init(input: String? = nil) {
-        rawInput = input ?? Self.input
-        recipes = Int(rawInput)!
+    init(input: String) {
+        rawInput = input
+        recipes = Int(input)!
     }
 
     func part1() -> String {

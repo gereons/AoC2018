@@ -14,8 +14,7 @@ final class Day11: AOCDay {
     private var grid = [[Int]]()
     private var summedArea = [[Int]]()
 
-    init(input: String? = nil) {
-        let input = input ?? Self.input
+    init(input: String) {
         serial = Int(input)!
     }
 

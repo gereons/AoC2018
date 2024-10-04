@@ -1,6 +1,7 @@
 import XCTest
 @testable import AdventOfCode
 
+@MainActor
 final class Day14Tests: XCTestCase {
     func testDay14_1() throws {
         XCTAssertEqual(Day14(input: "9").part1(), "5158916779")

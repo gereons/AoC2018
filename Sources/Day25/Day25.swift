@@ -50,9 +50,7 @@ private class Constellation: Equatable {
 final class Day25: AOCDay {
     private let points: [Point4]
 
-    init(input: String? = nil) {
-        let input = input ?? Self.input
-
+    init(input: String) {
         points = input.lines.map { Point4($0) }
     }
 

@@ -19,11 +19,10 @@ private struct GuardRecord {
 
 final class Day04: AOCDay {
     private var records = [GuardRecord]()
-    let input: [String]
+    let lines: [String]
 
-    init(input: String? = nil) {
-        let input = input ?? Self.input
-        self.input = input.lines
+    init(input: String) {
+        self.lines = input.lines
     }
 
     private func parseInput() {
@@ -33,7 +32,7 @@ final class Day04: AOCDay {
         let calendar = Calendar.current
 
         var byDate = [Date: [String]]()
-        for line in input {
+        for line in lines {
             let parts = line.components(separatedBy: " ")
             // moving the date to "modern" times avoid some really weird (leap-second?) results
             let fixedP0 = parts[0].replacingOccurrences(of: "1518", with: "1918")

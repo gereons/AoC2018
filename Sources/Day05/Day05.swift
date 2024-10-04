@@ -8,8 +8,8 @@ import AoCTools
 
 final class Day05: AOCDay {
     let polymers: [Character]
-    init(input: String? = nil) {
-        let input = input ?? Self.input
+
+    init(input: String) {
         polymers = input.map { $0 }
     }
 
