@@ -132,7 +132,7 @@ extension Day22.Maze: Pathfinding {
         Terrain(level: erosionLevel(geologicIndex(for: point)))
     }
 
-    func neighbors(for node: PathNode) -> [PathNode] {
+    func neighbors(of node: PathNode) -> [PathNode] {
         let points = node.point.neighbors()
             .filter { $0.x >= 0 && $0.y >= 0 }
         

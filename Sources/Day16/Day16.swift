@@ -15,13 +15,13 @@ private struct Sample {
     init(_ lines: [String]) {
         let parts1 = lines[0].split(separator: " ", maxSplits: 1)
         assert(parts1[0] == "Before:")
-        before = String(parts1[1].dropFirst().dropLast()).asInts(separator: ", ")
+        before = String(parts1[1].dropFirst().dropLast()).integers()
 
-        instruction = lines[1].asInts(separator: " ")
+        instruction = lines[1].integers()
 
         let parts3 = lines[2].split(separator: " ", maxSplits: 1)
         assert(parts3[0] == "After:")
-        after = String(parts3[1].dropFirst(2).dropLast()).asInts(separator: ", ")
+        after = String(parts3[1].dropFirst(2).dropLast()).integers()
     }
 }
 
@@ -81,7 +81,7 @@ final class Day16: AOCDay {
                 samples.append(Sample(Array(sample)))
             } else {
                 for line in sample where !line.isEmpty {
-                    program.append(line.asInts(separator: " "))
+                    program.append(line.integers())
                 }
             }
         }

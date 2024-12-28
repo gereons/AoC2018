@@ -10,7 +10,7 @@ final class Day01: AOCDay {
     let ints: [Int]
 
     init(input: String) {
-        self.ints = input.asInts(separator: "\n")
+        self.ints = input.lines.map { Int($0)! }
     }
 
     func part1() -> Int {
