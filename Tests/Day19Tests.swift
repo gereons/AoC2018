@@ -1,7 +1,6 @@
 import XCTest
 @testable import AdventOfCode
 
-@MainActor
 final class Day19Tests: XCTestCase {
     func testDay19_1() throws {
         let input = """
