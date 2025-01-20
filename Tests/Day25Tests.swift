@@ -1,9 +1,9 @@
-import XCTest
+import Testing
 @testable import AdventOfCode
 
-final class Day25Tests: XCTestCase {
-    func testDay25_1a() throws {
-        let day = Day25(input: """
+@Suite struct Day25Tests {
+    @Test func testDay25_part1() throws {
+        var day = Day25(input: """
 0,0,0,0
 3,0,0,0
 0,3,0,0
@@ -13,11 +13,9 @@ final class Day25Tests: XCTestCase {
 9,0,0,0
 12,0,0,0
 """)
-        XCTAssertEqual(day.part1(), 2)
-    }
+        #expect(day.part1() == 2)
 
-    func testDay25_1b() throws {
-        let day = Day25(input: """
+        day = Day25(input: """
 -1,2,2,0
 0,0,2,-2
 0,0,0,-2
@@ -29,11 +27,9 @@ final class Day25Tests: XCTestCase {
 0,2,1,-2
 3,0,0,0
 """)
-        XCTAssertEqual(day.part1(), 4)
-    }
+        #expect(day.part1() == 4)
 
-    func testDay25_1c() throws {
-        let day = Day25(input: """
+        day = Day25(input: """
 1,-1,0,1
 2,0,-1,0
 3,2,-1,0
@@ -45,11 +41,9 @@ final class Day25Tests: XCTestCase {
 1,-1,0,-1
 3,2,0,2
 """)
-        XCTAssertEqual(day.part1(), 3)
-    }
+        #expect(day.part1() == 3)
 
-    func testDay25_1d() throws {
-        let day = Day25(input: """
+        day = Day25(input: """
 1,-1,-1,-2
 -2,-2,0,1
 0,2,1,3
@@ -61,6 +55,11 @@ final class Day25Tests: XCTestCase {
 1,2,2,0
 -1,-2,0,-2
 """)
-        XCTAssertEqual(day.part1(), 8)
+        #expect(day.part1() == 8)
+    }
+
+    @Test func testDay25_part1_solution() {
+        let day = Day25(input: Day25.input)
+        #expect(day.part1() == 394)
     }
 }

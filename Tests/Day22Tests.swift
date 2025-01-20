@@ -1,20 +1,30 @@
-import XCTest
+import Testing
 @testable import AdventOfCode
 
-final class Day22Tests: XCTestCase {
-    func testDay22_1() throws {
+@Suite struct Day22Tests {
+    @Test func testDay22_part1() throws {
         let day = Day22(input: """
             depth: 510
             target: 10,10
             """)
-        XCTAssertEqual(day.part1(), 114)
+        #expect(day.part1() == 114)
     }
 
-    func testDay22_2() throws {
+    @Test func testDay22_part2() throws {
         let day = Day22(input: """
             depth: 510
             target: 10,10
             """)
-        XCTAssertEqual(day.part2(), 45)
+        #expect(day.part2() == 45)
+    }
+
+    @Test func testDay22_part1_solution() {
+        let day = Day22(input: Day22.input)
+        #expect(day.part1() == 7743)
+    }
+
+    @Test func testDay22_part2_solution() {
+        let day = Day22(input: Day22.input)
+        #expect(day.part2() == 1029)
     }
 }

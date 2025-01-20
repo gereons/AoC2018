@@ -1,10 +1,10 @@
-import XCTest
+import Testing
 @testable import AdventOfCode
 import AoCTools
 
-final class Day11Tests: XCTestCase {
+@Suite struct Day11Tests {
 
-    func testDay11_summedArea() throws {
+    @Test func testDay11_summedArea() throws {
         let day = Day11(input: "0")
         let input = [
             [0, 0, 0, 0, 0, 0, 0],
@@ -24,23 +24,33 @@ final class Day11Tests: XCTestCase {
             [0, 110, 186, 263, 371, 450, 555],
             [0, 111, 222, 333, 444, 555, 666]
         ]
-        XCTAssertEqual(day.summedArea(input: input), result)
+        #expect(day.summedArea(input: input) == result)
     }
 
-    func testDay11_powerLevel() throws {
-        XCTAssertEqual(Day11(input: "8").powerLevel(for: 3, y: 5), 4)
-        XCTAssertEqual(Day11(input: "57").powerLevel(for: 122, y: 79), -5)
-        XCTAssertEqual(Day11(input: "39").powerLevel(for: 217, y: 196), 0)
-        XCTAssertEqual(Day11(input: "71").powerLevel(for: 101,y: 153), 4)
+    @Test func testDay11_powerLevel() throws {
+        #expect(Day11(input: "8").powerLevel(for: 3, y: 5) == 4)
+        #expect(Day11(input: "57").powerLevel(for: 122, y: 79) == -5)
+        #expect(Day11(input: "39").powerLevel(for: 217, y: 196) == 0)
+        #expect(Day11(input: "71").powerLevel(for: 101,y: 153) == 4)
     }
 
-    func testDay11_1() throws {
-        XCTAssertEqual(Day11(input: "18").part1(), "33,45")
-        XCTAssertEqual(Day11(input: "42").part1(), "21,61")
+    @Test func testDay11_part1() throws {
+        #expect(Day11(input: "18").part1() == "33,45")
+        #expect(Day11(input: "42").part1() == "21,61")
     }
 
-    func testDay11_2() throws {
-        XCTAssertEqual(Day11(input: "18").part2(), "90,269,16")
-        XCTAssertEqual(Day11(input: "42").part2(), "232,251,12")
+    @Test func testDay11_part2() throws {
+        #expect(Day11(input: "18").part2() == "90,269,16")
+        #expect(Day11(input: "42").part2() == "232,251,12")
+    }
+
+    @Test func testDay11_part1_solution() {
+        let day = Day11(input: Day11.input)
+        #expect(day.part1() == "21,72")
+    }
+
+    @Test func testDay11_part2_solution() {
+        let day = Day11(input: Day11.input)
+        #expect(day.part2() == "242,13,9")
     }
 }

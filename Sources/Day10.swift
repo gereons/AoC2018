@@ -39,7 +39,7 @@ final class Day10: AdventOfCodeDay {
         self.height = height
     }
 
-    func part1() -> Int {
+    func part1() -> (String, Int) {
         var count = 0
         while true {
             let uniqueLights = Set(lights.map { $0.current })
@@ -55,11 +55,10 @@ final class Day10: AdventOfCodeDay {
             count += 1
         }
 
-        // solution: GJNKBZEE
-        return count
+        return ("GJNKBZEE", count)
     }
 
     func part2() -> Int {
-        return 0
+        return part1().1
     }
 }

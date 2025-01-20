@@ -1,8 +1,8 @@
-import XCTest
+import Testing
 @testable import AdventOfCode
 
-final class Day15Tests: XCTestCase {
-    func testDay15_1a() throws {
+@Suite struct Day15Tests {
+    @Test func testDay15_part1() throws {
         let input = """
 #######
 #G..#E#
@@ -12,12 +12,10 @@ final class Day15Tests: XCTestCase {
 #...E.#
 #######
 """
-        let day = Day15(input: input)
-        XCTAssertEqual(day.part1(), 36334)
-    }
+        var day = Day15(input: input)
+        #expect(day.part1() == 36334)
 
-    func testDay15_1b() throws {
-        let input = """
+        let input2 = """
 #######
 #E..EG#
 #.#G.E#
@@ -26,12 +24,10 @@ final class Day15Tests: XCTestCase {
 #..E#.#
 #######
 """
-        let day = Day15(input: input)
-        XCTAssertEqual(day.part1(), 39514)
-    }
+        day = Day15(input: input2)
+        #expect(day.part1() == 39514)
 
-    func testDay15_1c() throws {
-        let input = """
+        let input3 = """
 #######
 #.E...#
 #.#..G#
@@ -40,12 +36,10 @@ final class Day15Tests: XCTestCase {
 #...#G#
 #######
 """
-        let day = Day15(input: input)
-        XCTAssertEqual(day.part1(), 28944)
-    }
+        day = Day15(input: input3)
+        #expect(day.part1() == 28944)
 
-    func testDay15_1d() throws {
-        let input = """
+        let input4 = """
 #######
 #E.G#.#
 #.#G..#
@@ -54,12 +48,10 @@ final class Day15Tests: XCTestCase {
 #...E.#
 #######
 """
-        let day = Day15(input: input)
-        XCTAssertEqual(day.part1(), 27755)
-    }
+        day = Day15(input: input4)
+        #expect(day.part1() == 27755)
 
-    func testDay15_1e() throws {
-        let input = """
+        let input5 = """
 #########
 #G......#
 #.E.#...#
@@ -70,12 +62,12 @@ final class Day15Tests: XCTestCase {
 #.....G.#
 #########
 """
-        let day = Day15(input: input)
-        XCTAssertEqual(day.part1(), 18740)
+        day = Day15(input: input5)
+        #expect(day.part1() == 18740)
     }
 
-    func testDay15_2a() throws {
-        let day = Day15(input: """
+    @Test func testDay15_part2() throws {
+        var day = Day15(input: """
 #######
 #.G...#
 #...EG#
@@ -84,11 +76,9 @@ final class Day15Tests: XCTestCase {
 #.....#
 #######
 """)
-        XCTAssertEqual(day.part2(), 4988)
-    }
+        #expect(day.part2() == 4988)
 
-    func testDay15_2b() throws {
-        let day = Day15(input: """
+        day = Day15(input: """
 #######
 #E.G#.#
 #.#G..#
@@ -97,11 +87,9 @@ final class Day15Tests: XCTestCase {
 #...E.#
 #######
 """)
-        XCTAssertEqual(day.part2(), 3478)
-    }
+        #expect(day.part2() == 3478)
 
-    func testDay15_2c() throws {
-        let day = Day15(input: """
+        day = Day15(input: """
 #######
 #.E...#
 #.#..G#
@@ -110,11 +98,9 @@ final class Day15Tests: XCTestCase {
 #...#G#
 #######
 """)
-        XCTAssertEqual(day.part2(), 6474)
-    }
+        #expect(day.part2() == 6474)
 
-    func testDay15_2d() throws {
-        let day = Day15(input: """
+        day = Day15(input: """
 #########
 #G......#
 #.E.#...#
@@ -125,6 +111,16 @@ final class Day15Tests: XCTestCase {
 #.....G.#
 #########
 """)
-        XCTAssertEqual(day.part2(), 1140)
+        #expect(day.part2() == 1140)
+    }
+
+    @Test func testDay15_part1_solution() {
+        let day = Day15(input: Day15.input)
+        #expect(day.part1() == 257954)
+    }
+
+    @Test func testDay15_part2_solution() {
+        let day = Day15(input: Day15.input)
+        #expect(day.part2() == 51041)
     }
 }

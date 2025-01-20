@@ -1,7 +1,7 @@
-import XCTest
+import Testing
 @testable import AdventOfCode
 
-final class Day24Tests: XCTestCase {
+@Suite struct Day24Tests {
     let input = """
 Immune System:
 17 units each with 5390 hit points (weak to radiation, bludgeoning) with an attack that does 4507 fire damage at initiative 2
@@ -12,13 +12,23 @@ Infection:
 4485 units each with 2961 hit points (immune to radiation; weak to fire, cold) with an attack that does 12 slashing damage at initiative 4
 """
 
-    func testDay24_1() throws {
+    @Test func testDay24_part1() throws {
         let day = Day24(input: input)
-        XCTAssertEqual(day.part1(), 5216)
+        #expect(day.part1() == 5216)
     }
 
-    func testDay24_2() throws {
+    @Test func testDay24_part2() throws {
         let day = Day24(input: input)
-        XCTAssertEqual(day.part2(), 51)
+        #expect(day.part2() == 51)
+    }
+
+    @Test func testDay24_part1_solution() {
+        let day = Day24(input: Day24.input)
+        #expect(day.part1() == 38008)
+    }
+
+    @Test func testDay24_part2_solution() {
+        let day = Day24(input: Day24.input)
+        #expect(day.part2() == 4009)
     }
 }

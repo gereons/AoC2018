@@ -1,8 +1,8 @@
-import XCTest
+import Testing
 @testable import AdventOfCode
 
-final class Day04Tests: XCTestCase {
-    func testDay04_1() throws {
+@Suite struct Day04Tests {
+    @Test func testDay04_part1() throws {
         let day = Day04(input: """
             [1918-11-01 00:00] Guard #10 begins shift
             [1918-11-01 00:05] falls asleep
@@ -22,10 +22,10 @@ final class Day04Tests: XCTestCase {
             [1918-11-05 00:45] falls asleep
             [1918-11-05 00:55] wakes up
             """)
-        XCTAssertEqual(day.part1(), 240)
+        #expect(day.part1() == 240)
     }
 
-    func testDay04_2() throws {
+    @Test func testDay04_part2() throws {
         let day = Day04(input: """
             [1918-11-01 00:00] Guard #10 begins shift
             [1918-11-01 00:05] falls asleep
@@ -45,6 +45,16 @@ final class Day04Tests: XCTestCase {
             [1918-11-05 00:45] falls asleep
             [1918-11-05 00:55] wakes up
             """)
-        XCTAssertEqual(day.part2(), 4455)
+        #expect(day.part2() == 4455)
+    }
+
+    @Test func testDay04_part1_solution() {
+        let day = Day04(input: Day04.input)
+        #expect(day.part1() == 35184)
+    }
+
+    @Test func testDay04_part2_solution() {
+        let day = Day04(input: Day04.input)
+        #expect(day.part2() == 37886)
     }
 }

@@ -1,9 +1,9 @@
-import XCTest
+import Testing
 @testable import AdventOfCode
 
-final class Day09Tests: XCTestCase {
+@Suite struct Day09Tests {
 
-    func testDay09_1() throws {
+    @Test func testDay09_part1() throws {
         let testInput = [
             "9 players; last marble is worth 25 points": 32,
             "10 players; last marble is worth 1618 points": 8317,
@@ -15,7 +15,17 @@ final class Day09Tests: XCTestCase {
 
         for (input, score) in testInput {
             let day = Day09(input: input)
-            XCTAssertEqual(day.part1(), score)
+            #expect(day.part1() == score)
         }
+    }
+
+    @Test func testDay09_part1_solution() {
+        let day = Day09(input: Day09.input)
+        #expect(day.part1() == 375414)
+    }
+
+    @Test func testDay09_part2_solution() {
+        let day = Day09(input: Day09.input)
+        #expect(day.part2() == 3168033673)
     }
 }

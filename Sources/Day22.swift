@@ -8,11 +8,12 @@ import AoCTools
 
 final class Day22: AdventOfCodeDay {
     let title = "Mode Maze"
+
     final class Maze {
         let target: Point
         let depth: Int
 
-        static nonisolated(unsafe) private var memo = [Point: Int]()
+        private var memo = [Point: Int]()
 
         init(target: Point, depth: Int) {
             self.target = target
@@ -85,14 +86,14 @@ extension Day22.Maze {
         if point.y == 0 { return point.x * 16807 }
         if point.x == 0 { return point.y * 48271 }
 
-        if let index = Self.memo[point] {
+        if let index = memo[point] {
             return index
         }
         let index1 = geologicIndex(for: Point(point.x-1, point.y))
         let index2 = geologicIndex(for: Point(point.x, point.y-1))
 
         let level = erosionLevel(index1) * erosionLevel(index2)
-        Self.memo[point] = level
+        memo[point] = level
         return level
     }
 
