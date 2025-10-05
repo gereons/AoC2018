@@ -8,7 +8,7 @@
 
 import AoCTools
 
-final class Day11: AdventOfCodeDay {
+final class Day11: AdventOfCodeDay, @unchecked Sendable {
     let title = "Chronal Charge"
     let serial: Int
     let gridSize = 300

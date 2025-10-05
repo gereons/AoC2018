@@ -6,7 +6,7 @@
 
 import AoCTools
 
-private enum Tile: Character, Drawable {
+private enum Tile: Character, Drawable, Sendable {
     case goblin = "G"
     case elf = "E"
     case floor = "."
@@ -27,6 +27,8 @@ private final class Unit {
         self.power = power
     }
 }
+
+extension Grid: @unchecked @retroactive Sendable where Value: Sendable {}
 
 final class Day15: AdventOfCodeDay {
     let title = "Beverage Bandits"

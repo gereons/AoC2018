@@ -17,7 +17,7 @@ private struct GuardRecord {
     }
 }
 
-final class Day04: AdventOfCodeDay {
+final class Day04: AdventOfCodeDay, @unchecked Sendable {
     let title = "Repose Record"
     private var records = [GuardRecord]()
     let lines: [String]

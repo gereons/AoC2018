@@ -37,7 +37,7 @@ extension Direction {
     }
 }
 
-private class Cart {
+private final class Cart: @unchecked Sendable {
     let id = UUID()
     var position: Point
     var direction: Direction

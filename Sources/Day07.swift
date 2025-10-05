@@ -6,7 +6,7 @@
 
 import AoCTools
 
-private class Step {
+private final class Step: @unchecked Sendable {
     let id: String
     var prerequisites: [String]
 

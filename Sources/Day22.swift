@@ -9,7 +9,7 @@ import AoCTools
 final class Day22: AdventOfCodeDay {
     let title = "Mode Maze"
 
-    final class Maze {
+    final class Maze: @unchecked Sendable {
         let target: Point
         let depth: Int
 

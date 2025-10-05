@@ -13,7 +13,7 @@ import AoCTools
  (\d*) units each with (\d*) hit points \(((.*) to (.*); )?(.*) to (.*)\) with an attack that does (\d*) (.*) damage at initiative (\d*)
  */
 
-private class Army: CustomStringConvertible {
+private final class Army: CustomStringConvertible, @unchecked Sendable {
     enum Group: String, CustomStringConvertible {
         case immuneSystem
         case infection

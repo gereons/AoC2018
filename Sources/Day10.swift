@@ -6,7 +6,7 @@
 
 import AoCTools
 
-private class Light {
+private final class Light: @unchecked Sendable {
     private(set) var current: Point
     let start: Point
     let velocity: Point
